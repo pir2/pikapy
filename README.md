@@ -1,5 +1,9 @@
-Pikapy - Mass Pokemon Go Account Creator and ToS verifier
+Pikapy - [NOT DEAD READ BELOW] Mass Pokemon Go Account Creator and ToS verifier
 ==============================================================
+
+#NOTICE
+##DUE TO NIANTIC IMPLEMENTING RECAPTCHA IN THE SIGN-UP PROCESS, THIS SCRIPT IS NOT WORKING ANYMORE. BUT ITS NOT THE END, READ BELOW
+#### Niantic has implemented reCaptcha into their signup process, causing this script to stop working. But we are working on a website which will allow you generate accounts just with a few clicks!
 
 Description
 -----------
@@ -11,15 +15,30 @@ usernames.txt will give the needed output for https://github.com/favll/pogom in 
 Installation
 ------------
 
+Note: If you are upgrading from the last version, you will have to update and/or reinstall the requirements.
+
 Install from Github using pip::
 
-    ~pip install git+https://github.com/skvvv/pikapy
+    pip install git+https://github.com/skvvv/pikapy
     
+If given errors try (Due to both having python2 and python3):
     
-    If given errors try (Due to both having python2 and python3):
+    pip2 install git+https://github.com/skvvv/pikapy  
     
+Or if given permission errors:
+
+    sudo pip2 install git+https://github.com/skvvv/pikapy  
+
+If given error:
+
+    from pgoapi import PGoApi
+    ImportError: No module named pgoapi
     
-    ~sudo pip2 install git+https://github.com/skvvv/pikapy
+Run:
+
+    pip install git+https://github.com/keyphact/pgoapi.git
+
+If you are having problems with installation, join us on https://discord.gg/2cmhB
 
 Use
 ---
