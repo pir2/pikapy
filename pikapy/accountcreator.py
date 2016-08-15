@@ -1,6 +1,10 @@
 from six.moves import range
 import random
 import string
+import sys, urllib2, urllib, sqlite3, webbrowser, re
+
+from BeautifulSoup import BeautifulSoup
+
 # urllib imports supporting Python 2 and 3
 try:
     # Python 3
@@ -266,7 +270,25 @@ def create_account(username, password, email):
                 },
                 resp_code=200
             )
-
+            
+            #Check for recaptcha
+            output_decaptcha(session.request(
+					url='{base_url}/parents/sign-up'.format(base_url=_BASE_URL),
+					headers={  # Content-Type and Referer headers are required
+						'Host': 'club.pokemon.com',
+						'Cache-Control': 'max-age=0',
+						'Origin': 'https://club.pokemon.com',
+						'Upgrade-Insecure-Requests': '1',
+						'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
+						'Content-Type': 'application/x-www-form-urlencoded',
+						'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+						'Referer': 'https://club.pokemon.com/us/pokemon-trainer-club/parents/sign-up',
+						'Accept-Encoding': 'gzip, deflate, br',
+						'Accept-Language': 'en-US,en;q=0.8'
+					}
+                )
+			)
+            
             # Post request submitting account information
             resp = session.request(
                 url='{base_url}/parents/sign-up'.format(base_url=_BASE_URL),
@@ -340,6 +362,39 @@ def _validate_response(resp):
     else:
         raise PTCException('Generic failure. User was not created.')
     return False  # Should never hit here
+
+
+def check_for_captcha(source):
+     #check for recaptcha in the page source, and return true or false.
+     has_recaptcha = re.search('recaptcha_challenge_field', source)
+     if has_recaptcha is None:
+          return False
+     elif has_recaptcha is not None:
+          return True
+
+def output_decaptcha(obj):
+    try:
+        print 'initiating recaptcha passthrough'
+        soup=BeautifulSoup(obj)
+        token= soup.find('iframe')['src'].replace("http://www.google.com/recaptcha/api/noscript?k=", "")
+        print "token %s" % token
+        surl = 'http://www.google.com/recaptcha/api/challenge?k=' + token
+        req = urllib2.Request(surl)
+        req.add_header('User-agent', USER_AGENT)
+        tokenlink = urllib2.urlopen(req).read()     
+        print 'tokenlink %s' % tokenlink
+        matchy=re.compile("challenge : '(.+?)'").findall(tokenlink)
+        for challenge in matchy:
+            imageurl='http://www.google.com/recaptcha/api/image?c='+challenge
+            print "Opening Captcha Link..."
+            webbrowser.open(imageurl, new=2, autoraise=True)
+            userInput = raw_input()
+            if userInput != '':
+               print 'challenge token:'+token + ' recaptcha_response_field:' + userInput
+               parameters = urllib.urlencode({'recaptcha_challenge_field': token, 'recaptcha_response_field': userInput})
+               #search(query, parameters)
+    except Exception, e:
+        print 'Error %s' %  e.message       
 
 
 def random_account(username=None, password=None, email=None, email_tag=False):
