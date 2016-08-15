@@ -32,7 +32,8 @@ PROVIDER = 'provider'
 USERNAME = 'username'
 PASSWORD = 'password'
 EMAIL = 'email'
-USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+#USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; AskTB5.6)'
 _PTC_PROVIDER = 'ptc'  # Account provider (APIs take 'ptc' or 'google')
 
 
@@ -402,6 +403,7 @@ def output_decaptcha(obj):
         print 'initiating recaptcha passthrough'
         soup=BeautifulSoup(obj)
         token= soup.find('iframe')['src'].replace("http://www.google.com/recaptcha/api/noscript?k=", "")
+        #token = soup.find(https://www.google.com/recaptcha/api2/anchor?k=6LdpuiYTAAAAAL6y9JNUZzJ7cF3F8MQGGKko1bCy&co=aHR0cHM6Ly9jbHViLnBva2Vtb24uY29tOjQ0Mw..&hl=en&v=r20160811171912&size=normal&cb=abbtbqjlouaz
         print "token %s" % token
         surl = 'http://www.google.com/recaptcha/api/challenge?k=' + token
         req = urllib2.Request(surl)
