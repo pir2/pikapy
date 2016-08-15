@@ -271,7 +271,9 @@ def create_account(username, password, email):
                 resp_code=200
             )
 
-			output_decaptcha(urllib2.Request('{base_url}/parents/sign-up'.format(base_url=_BASE_URL))
+			recap_resp = urllib2.Request('{base_url}/parents/sign-up'.format(base_url=_BASE_URL)
+			print recap_resp
+			output_decaptcha(recap_resp)
 
         #    print session.request(
 	#			url='{base_url}/parents/sign-up'.format(base_url=_BASE_URL),
