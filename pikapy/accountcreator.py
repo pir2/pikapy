@@ -273,6 +273,7 @@ def create_account(username, password, email):
             
             recap_req = urllib2.Request('{base_url}/parents/sign-up'.format(base_url=_BASE_URL))
             print recap_req
+            recap_req.add_header('User-agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',)
             response = urllib2.urlopen(recap_req)
             print response
             body = response.read()  
